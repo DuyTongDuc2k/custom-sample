@@ -1,8 +1,8 @@
 #!/bin/bash
 
 mkdir -p /data
-cd /data
-export DATA=`pwd`
+
+export DATA="/data"
 
 ./mount-disk
 
