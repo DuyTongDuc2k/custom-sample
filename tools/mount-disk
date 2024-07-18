@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Function to check if user agrees to mount the disk
+confirm_mount() {
+    read -r -p "Do you want  tomount the disk to /data? (y/n): " response
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+        return 0  # Return success
+    else
+        return 1  # Return failure
+    fi
+}
+
+# Function to find an unmounted disk
+find_unmounted_disk() {
+    for disk in $(lsblk -dno NAME,TYPE | grep disk | awk '{print $1}'); do
+        if ! mount | grep -q "/dev/$disk"; then
+            echo "/dev/$disk"
+            return
+        fi
+    done
+    echo ""
+}
+
+# List block devices
+lsblk
+
+# Find an unmounted disk
+disk=$(find_unmounted_disk)
+
+if [ -z "$disk" ]; then
+    echo "No unmounted disk found."
+    exit 1
+else
+    echo "Unmounted disk found: $disk"
+fi
+
+# Format the disk with ext4 filesystem
+mkfs.ext4 "$disk"
+
+# Ask for permission before mounting
+if confirm_mount; then
+    # Mount the disk to /data
+    mount "$disk" ${DATA}
+    # Save the mounting in /etc/fstab to persist across reboots
+    echo "$disk $DATA ext4 defaults 0 0" >> /etc/fstab
+    echo "Mount is completed!"
+else
+    echo "Mounting cancelled by user."
+    exit 1
+fi
+
+

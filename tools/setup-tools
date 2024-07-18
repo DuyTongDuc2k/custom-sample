@@ -1,0 +1,27 @@
+#!/bin/bash
+
+dnf update -y
+
+dnf install 'dnf-command(copr)' -y
+
+dnf copr enable @osbuild/osbuild-stable -y
+dnf copr enable @centos-automotive-sig/osbuild-auto -y
+
+echo "==================================================="
+echo "= Enable required COPR repositories is completed! ="
+echo "==================================================="
+
+# install modules for python
+dnf install python3-pip
+
+pip3 install pyyaml
+
+pip3 install ruamel.yaml
+
+# Install required packages
+dnf install osbuild -y 
+dnf install osbuild-auto -y
+dnf install osbuild-ostree -y
+dnf install osbuild-tools -y
+
+
