@@ -2,6 +2,8 @@
 
 dnf update -y
 
+dnf install jq -y # for 
+
 dnf install 'dnf-command(copr)' -y
 
 dnf copr enable @osbuild/osbuild-stable -y
