@@ -18,6 +18,9 @@ pip3 install pyyaml
 
 pip3 install ruamel.yaml
 
+pip3 install yq
+
+
 # Install required packages
 dnf install osbuild -y 
 dnf install osbuild-auto -y

@@ -1,5 +1,5 @@
 version: '2'
-dirived_from: 'f40'  # you adjust this parameter to other distro like cs9,autosd,f39,etc.
+distro: 'f40'
 mpp-vars:
   distro_repos:
     - id: custom
