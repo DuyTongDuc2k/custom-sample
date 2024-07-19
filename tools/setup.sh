@@ -3,9 +3,9 @@
 mkdir -p /data
 export WORKPLACE="/data"
 
-# ./mount-disk # mount /dev/vdb to /data 
+./mount-disk # mount /dev/vdb to /data 
 
-# ./install-tools 
+./install-tools 
 
 ./get-source
 
