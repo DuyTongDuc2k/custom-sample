@@ -1,15 +1,12 @@
 #!/bin/bash
 
 mkdir -p /data
+export WORKPLACE="/data"
 
-export DATA="/data"
+# ./mount-disk # mount /dev/vdb to /data 
 
-./mount-disk
-
-./setup-tools
+# ./install-tools 
 
 ./get-source
-
-
 
 echo "Setting up the environment is completed!"

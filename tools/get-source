@@ -1,14 +1,12 @@
 #!/bin/bash
 
-cd $DATA
-
-mkdir -p workplace
-cd workplace
-export WORKPLACE=`pwd`
+cd $WORKPLACE
 
 # Clone the sample-images repository with submodules
-git clone --recurse-submodule https://gitlab.com/CentOS/automotive/sample-images.git
+git clone --recurse-submodule https://gitlab.com/CentOS/automotive/sample-images.git 
+
 git clone https://github.com/DuyTongDuc2k/custom-sample.git
 
+ls  -1
 
 

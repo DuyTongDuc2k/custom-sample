@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Ensure WORKPLACE is set
-if [ -z "$WORKPLACE" ]; then
-    echo "WORKPLACE is not set. Exiting."
-    exit 1
-fi
-
 # Change to WORKPLACE directory
 cd "$WORKPLACE" || { echo "Failed to change directory to $WORKPLACE. Exiting."; exit 1; }
 
@@ -13,13 +7,7 @@ cd "$WORKPLACE" || { echo "Failed to change directory to $WORKPLACE. Exiting."; 
 DISTRO_FOLDER=$(find "$WORKPLACE" -type d -name "distro")
 
 # Parse the image-patch.ipp.yml to get distro
-IMAGE_PATCH=$(find "$WORKPLACE" -name "image-patch.ipp.yml")
-
-# Ensure image patch file exists
-if [ -z "$IMAGE_PATCH" ]; then
-    echo "image-patch.ipp.yml not found in $WORKPLACE. Exiting."
-    exit 1
-fi
+IMAGE_PATCH=$(find "$(pwd)" -name "image-patch.ipp.yml")
 
 # Get the distro from the image-patch.ipp.yml
 DISTRO=$(python3 parser.py "$IMAGE_PATCH")

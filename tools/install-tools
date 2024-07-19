@@ -12,7 +12,7 @@ echo "= Enable required COPR repositories is completed! ="
 echo "==================================================="
 
 # install modules for python
-dnf install python3-pip
+dnf install python3-pip -y
 
 pip3 install pyyaml
 
