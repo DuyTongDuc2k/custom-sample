@@ -1,33 +1,55 @@
 #!/bin/bash
 
-export DATA="/data"
-cd $DATA
-mkdir -p workplace
-cd workplace
+rm -rf deploy
+mkdir -p deploy
+
+export SAMPLE_IMAGES="/data/sample-images"
 export WORKPLACE=`pwd`
+export DEPLOY="${WORKPLACE}/depoy"
+
+#Filenames
+CUSTOM="custom.ipp.yml"     # This file will be created in deploy directory
+PATCH="image-patch.ipp.yml" # This file locates in $WORKPLACE dir
+
+# Create the custom yml
+## Get the distro
+DISTRO=$(yq ".distro" $PATCH | sed 's/"//g') # f40, cs9, eln, f38
+DISTRO_DIR=$(find $SAMPLE_IMAGES -type d -name "distro") # this place contains the distro yml
+
+python3 apply-patch.py -o $DEPLOY/$CUSTOM $DISTRO_DIR/$DISTRO.ipp.yml $PATCH
+
+cp $DEPLOY/$CUSTOM $DISTRO_DIR
 
 
-PATCH="image-patch.ipp.yml"
-CUSTOM="custom.ipp.yml"
+## Build The custom image
+
+BUILD_DIR=$(find $SAMPLE_IMAGES -type d -name "osbuild-manifests")
+
+cd $BUILD_DIR
+
+echo "START THE BUILD"
+
+make custom-qemu-developer-regular.aarch64.qcow2
+
+mv custom-qemu-developer-regular.aarch64.qcow2 $DEPLOY
+
+cd $DEPLOY
+
+ls -l
 
 
-# apply the patch and then create the custom distro yml
 
-# Step 1: Get the original distro yml.
 
-PATCH=$(find $DATA -name "$PATCH")
 
-DISTRO_FOLDER= $(find $DATA -type d -name "distro")
 
-ORIGIN_DISTRO=$(yq ".distro" $PATCH | sed 's/"//g') # f40, cs9, eln, f38
 
-ORIGIN_DISTRO=$(find $DISTRO_FOLDER -name "$ORIGIN_DISTRO.ipp.yml") || echo "$ORIGIN_DISTRO.ipp.yml not found"
 
-APPLY_PATCH_PATH=$(find $DATA -name "apply-patch.py")
 
-# Apply the patch to the origin distro and then create the custom distro
-rm -rf $CUSTOM
-touch $CUSTOM
+
+
+
+
+
 
 python3 $APPLY_PATCH_PATH $ORIGIN_DISTRO $PATCH -o $CUSTOM
 
@@ -41,28 +63,10 @@ echo "Start the build for the custom distro"
 
 sleep 3
 
-#make custom-qemu-developer-regular.aarch64.qcow2
+make custom-qemu-developer-regular.aarch64.qcow2
 
-#mv custom-qemu-developer-regular.aarch64.qcow2 $WORKPLACE
+mv custom-qemu-developer-regular.aarch64.qcow2 $WORKPLACE
 
 rm -rf $DISTRO_FOLDER/$CUSTOM
 
 echo "Build is completed!"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
