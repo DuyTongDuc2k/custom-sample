@@ -17,7 +17,7 @@ chmod -R 777 ${WORKPLACE}
 sleep 3
 
 # instalation the necessary tools
-./setup-tools.sh
+./install-tools.sh
 
 sleep 3
 
