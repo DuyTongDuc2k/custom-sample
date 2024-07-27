@@ -2,7 +2,7 @@
 
 dnf update -y
 
-dnf groupinstall "Development Tools" -y
+dnf install git make -y
 
 dnf install podman buildah -y
 
